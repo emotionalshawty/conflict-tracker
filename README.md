@@ -34,7 +34,7 @@ VALUES ('Conflicto Manual', '2025-01-01', 'ACTIVE', 'Insertado desde la consola 
 PAra actualizarlo:
 
 UPDATE conflict
-SET name = 'Nombre Actualizado', status = 'RESOLVED', description = 'El conflicto ha terminado'
+SET name = 'Nombre Actualizado', status = 'FROZEN', description = 'El conflicto ha terminado'
 WHERE id = 1;
 
 Para borrar un conflicto:
