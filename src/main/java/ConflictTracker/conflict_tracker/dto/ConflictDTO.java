@@ -1,34 +1,19 @@
-package ConflictTracker.conflict_tracker.model;
+package ConflictTracker.conflict_tracker.dto;
 
-import jakarta.persistence.*;
+import ConflictTracker.conflict_tracker.model.ConflictStatus;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Conflict {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ConflictDTO {
     private Long id;
-
     private String name;
     private LocalDate startDate;
-
-    @Enumerated(EnumType.STRING)
     private ConflictStatus status;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
+    private Set<Long> countryIds;
+    private Set<CountryDTO> countries;
 
-    @ManyToMany
-    @JoinTable(
-            name = "conflict_countries",
-            joinColumns = @JoinColumn(name = "conflict_id"),
-            inverseJoinColumns = @JoinColumn(name = "country_id")
-    )
-    private Set<Country> countries = new HashSet<>();
-
-    public Conflict() {}
+    public ConflictDTO() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -40,6 +25,9 @@ public class Conflict {
     public void setStatus(ConflictStatus status) { this.status = status; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public Set<Country> getCountries() { return countries; }
-    public void setCountries(Set<Country> countries) { this.countries = countries; }
+    public Set<Long> getCountryIds() { return countryIds; }
+    public void setCountryIds(Set<Long> countryIds) { this.countryIds = countryIds; }
+    public Set<CountryDTO> getCountries() { return countries; }
+    public void setCountries(Set<CountryDTO> countries) { this.countries = countries; }
 }
+

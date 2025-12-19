@@ -19,7 +19,8 @@ public class Country {
     @ManyToMany(mappedBy = "supportingCountries")
     private Set<Faction> supportedFactions = new HashSet<>();
 
-    // getters/setters
+    public Country() {}
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
