@@ -13,7 +13,7 @@ Ejecuta el programa desde COnflictTrackerApplication o comn el comando
 LA aplicacion se abrira en la url:
 http://localhost:8080
 
-### Acceso a la base de datos
+## Acceso a la base de datos
 La aplicación utiliza una base de datos en memoria. Para ver y manipular los datos directamente:
 Abre tu navegador y ve a: http://localhost:8080/h2-console
 IMPORTANTE: Configura los datos de conexión exactamente así (basado en tu application.yaml):
