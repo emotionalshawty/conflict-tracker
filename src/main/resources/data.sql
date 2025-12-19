@@ -29,3 +29,4 @@ INSERT INTO faction_countries (faction_id, country_id) VALUES (3, 3); -- USA sup
 INSERT INTO event (id, event_date, location, description, conflict_id) VALUES (1, '2022-02-24', 'Kyiv', 'Full-scale invasion of Ukraine by Russia.', 1);
 INSERT INTO event (id, event_date, location, description, conflict_id) VALUES (2, '2023-10-07', 'Southern Israel', 'Hamas-led attack on Israel.', 2);
 
+ALTER TABLE conflict ALTER COLUMN id RESTART WITH 100;
