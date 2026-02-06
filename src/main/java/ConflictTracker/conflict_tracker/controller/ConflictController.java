@@ -1,9 +1,10 @@
 package ConflictTracker.conflict_tracker.controller;
 
+import ConflictTracker.conflict_tracker.dto.ConflictCreateDTO;
+import ConflictTracker.conflict_tracker.dto.ConflictDetailDTO;
 import ConflictTracker.conflict_tracker.dto.ConflictDTO;
 import ConflictTracker.conflict_tracker.model.ConflictStatus;
 import ConflictTracker.conflict_tracker.service.ConflictService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,30 +15,42 @@ import java.util.List;
 @RequestMapping("/api/v1/conflicts")
 public class ConflictController {
 
-    @Autowired
-    private ConflictService conflictService;
+    private final ConflictService conflictService;
+
+    public ConflictController(ConflictService conflictService) {
+        this.conflictService = conflictService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<ConflictDTO>> getAllConflicts(@RequestParam(required = false) ConflictStatus status) {
+    public ResponseEntity<List<ConflictDTO>> getAllConflicts(
+            @RequestParam(required = false) ConflictStatus status) {
+        List<ConflictDTO> conflicts;
         if (status != null) {
-            return ResponseEntity.ok(conflictService.getConflictsByStatus(status));
+            conflicts = conflictService.getConflictsByStatus(status);
+        } else {
+            conflicts = conflictService.getAllConflicts();
         }
-        return ResponseEntity.ok(conflictService.getAllConflicts());
+        return ResponseEntity.ok(conflicts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConflictDTO> getConflictById(@PathVariable Long id) {
-        return ResponseEntity.ok(conflictService.getConflictById(id));
+    public ResponseEntity<ConflictDetailDTO> getConflictById(@PathVariable Long id) {
+        ConflictDetailDTO conflict = conflictService.getConflictById(id);
+        return ResponseEntity.ok(conflict);
     }
 
     @PostMapping
-    public ResponseEntity<ConflictDTO> createConflict(@RequestBody ConflictDTO conflictDTO) {
-        return new ResponseEntity<>(conflictService.createConflict(conflictDTO), HttpStatus.CREATED);
+    public ResponseEntity<ConflictDTO> createConflict(@RequestBody ConflictCreateDTO createDTO) {
+        ConflictDTO created = conflictService.createConflict(createDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConflictDTO> updateConflict(@PathVariable Long id, @RequestBody ConflictDTO conflictDTO) {
-        return ResponseEntity.ok(conflictService.updateConflict(id, conflictDTO));
+    public ResponseEntity<ConflictDTO> updateConflict(
+            @PathVariable Long id,
+            @RequestBody ConflictCreateDTO updateDTO) {
+        ConflictDTO updated = conflictService.updateConflict(id, updateDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -46,3 +59,6 @@ public class ConflictController {
         return ResponseEntity.noContent().build();
     }
 }
+
+
+

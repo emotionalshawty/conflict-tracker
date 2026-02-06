@@ -1,39 +1,34 @@
 package ConflictTracker.conflict_tracker.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
-public class FactionDTO {
+public class FactionCreateDTO {
 
-    private Long id;
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotNull(message = "Conflict ID is required")
     private Long conflictId;
-    private String conflictName;
+
     private Set<String> supportingCountryCodes;
 
     // Constructors
-    public FactionDTO() {}
+    public FactionCreateDTO() {}
 
-    public FactionDTO(Long id, String name, Long conflictId, String conflictName,
-                      Set<String> supportingCountryCodes) {
-        this.id = id;
+    public FactionCreateDTO(String name, Long conflictId, Set<String> supportingCountryCodes) {
         this.name = name;
         this.conflictId = conflictId;
-        this.conflictName = conflictName;
         this.supportingCountryCodes = supportingCountryCodes;
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
     public Long getConflictId() { return conflictId; }
     public void setConflictId(Long conflictId) { this.conflictId = conflictId; }
-
-    public String getConflictName() { return conflictName; }
-    public void setConflictName(String conflictName) { this.conflictName = conflictName; }
 
     public Set<String> getSupportingCountryCodes() { return supportingCountryCodes; }
     public void setSupportingCountryCodes(Set<String> supportingCountryCodes) {

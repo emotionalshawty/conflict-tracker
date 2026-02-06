@@ -1,14 +1,13 @@
 package ConflictTracker.conflict_tracker.service;
 
-import ConflictTracker.conflict_tracker.dto.ConflictDTO;
-import ConflictTracker.conflict_tracker.dto.CountryDTO;
+import ConflictTracker.conflict_tracker.dto.*;
 import ConflictTracker.conflict_tracker.model.Conflict;
 import ConflictTracker.conflict_tracker.model.ConflictStatus;
 import ConflictTracker.conflict_tracker.model.Country;
 import ConflictTracker.conflict_tracker.repository.ConflictRepository;
 import ConflictTracker.conflict_tracker.repository.CountryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,83 +15,147 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ConflictService {
 
-    @Autowired
-    private ConflictRepository conflictRepository;
+    private final ConflictRepository conflictRepository;
+    private final CountryRepository countryRepository;
 
-    @Autowired
-    private CountryRepository countryRepository;
+    public ConflictService(ConflictRepository conflictRepository, CountryRepository countryRepository) {
+        this.conflictRepository = conflictRepository;
+        this.countryRepository = countryRepository;
+    }
 
     public List<ConflictDTO> getAllConflicts() {
         return conflictRepository.findAll().stream()
-                .map(this::convertToDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
-    }
-
-    public ConflictDTO getConflictById(Long id) {
-        Conflict conflict = conflictRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Conflict not found"));
-        return convertToDTO(conflict);
     }
 
     public List<ConflictDTO> getConflictsByStatus(ConflictStatus status) {
         return conflictRepository.findByStatus(status).stream()
-                .map(this::convertToDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<ConflictDTO> getConflictsByCountryCode(String code) {
-        return conflictRepository.findByCountries_Code(code).stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-
-    public ConflictDTO createConflict(ConflictDTO dto) {
-        Conflict conflict = new Conflict();
-        updateConflictFromDTO(conflict, dto);
-        Conflict saved = conflictRepository.save(conflict);
-        return convertToDTO(saved);
-    }
-
-    public ConflictDTO updateConflict(Long id, ConflictDTO dto) {
+    public ConflictDetailDTO getConflictById(Long id) {
         Conflict conflict = conflictRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Conflict not found"));
-        updateConflictFromDTO(conflict, dto);
+                .orElseThrow(() -> new ResourceNotFoundException("Conflict not found with id: " + id));
+        return toDetailDTO(conflict);
+    }
+
+    public ConflictDTO createConflict(ConflictCreateDTO createDTO) {
+        Conflict conflict = new Conflict();
+        conflict.setName(createDTO.getName());
+        conflict.setStartDate(createDTO.getStartDate());
+        conflict.setStatus(createDTO.getStatus());
+        conflict.setDescription(createDTO.getDescription());
+
+        if (createDTO.getCountryCodes() != null && !createDTO.getCountryCodes().isEmpty()) {
+            Set<Country> countries = new HashSet<>();
+            for (String code : createDTO.getCountryCodes()) {
+                Country country = countryRepository.findByCode(code)
+                        .orElseThrow(() -> new ResourceNotFoundException("Country not found with code: " + code));
+                countries.add(country);
+            }
+            conflict.setCountries(countries);
+        }
+
         Conflict saved = conflictRepository.save(conflict);
-        return convertToDTO(saved);
+        return toDTO(saved);
+    }
+
+    public ConflictDTO updateConflict(Long id, ConflictCreateDTO updateDTO) {
+        Conflict conflict = conflictRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Conflict not found with id: " + id));
+
+        conflict.setName(updateDTO.getName());
+        conflict.setStartDate(updateDTO.getStartDate());
+        conflict.setStatus(updateDTO.getStatus());
+        conflict.setDescription(updateDTO.getDescription());
+
+        if (updateDTO.getCountryCodes() != null) {
+            Set<Country> countries = new HashSet<>();
+            for (String code : updateDTO.getCountryCodes()) {
+                Country country = countryRepository.findByCode(code)
+                        .orElseThrow(() -> new ResourceNotFoundException("Country not found with code: " + code));
+                countries.add(country);
+            }
+            conflict.setCountries(countries);
+        }
+
+        Conflict saved = conflictRepository.save(conflict);
+        return toDTO(saved);
     }
 
     public void deleteConflict(Long id) {
+        if (!conflictRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Conflict not found with id: " + id);
+        }
         conflictRepository.deleteById(id);
     }
 
-    private void updateConflictFromDTO(Conflict conflict, ConflictDTO dto) {
-        conflict.setName(dto.getName());
-        conflict.setStartDate(dto.getStartDate());
-        conflict.setStatus(dto.getStatus());
-        conflict.setDescription(dto.getDescription());
-
-        if (dto.getCountryIds() != null) {
-            Set<Country> countries = new HashSet<>(countryRepository.findAllById(dto.getCountryIds()));
-            conflict.setCountries(countries);
-        }
+    public List<ConflictDTO> getConflictsByCountryCode(String countryCode) {
+        return conflictRepository.findByCountryCode(countryCode).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
-    private ConflictDTO convertToDTO(Conflict conflict) {
-        ConflictDTO dto = new ConflictDTO();
-        dto.setId(conflict.getId());
-        dto.setName(conflict.getName());
-        dto.setStartDate(conflict.getStartDate());
-        dto.setStatus(conflict.getStatus());
-        dto.setDescription(conflict.getDescription());
+    // Mapping methods
 
-        Set<CountryDTO> countryDTOs = conflict.getCountries().stream()
+    private ConflictDTO toDTO(Conflict conflict) {
+        Set<String> countryCodes = conflict.getCountries().stream()
+                .map(Country::getCode)
+                .collect(Collectors.toSet());
+        return new ConflictDTO(
+                conflict.getId(),
+                conflict.getName(),
+                conflict.getStartDate(),
+                conflict.getStatus(),
+                conflict.getDescription(),
+                countryCodes
+        );
+    }
+
+    private ConflictDetailDTO toDetailDTO(Conflict conflict) {
+        Set<CountryDTO> countries = conflict.getCountries().stream()
                 .map(c -> new CountryDTO(c.getId(), c.getName(), c.getCode()))
                 .collect(Collectors.toSet());
-        dto.setCountries(countryDTOs);
 
-        return dto;
+        List<FactionDTO> factions = conflict.getFactions().stream()
+                .map(f -> new FactionDTO(
+                        f.getId(),
+                        f.getName(),
+                        conflict.getId(),
+                        conflict.getName(),
+                        f.getSupportingCountries().stream()
+                                .map(Country::getCode)
+                                .collect(Collectors.toSet())
+                ))
+                .collect(Collectors.toList());
+
+        List<EventDTO> events = conflict.getEvents().stream()
+                .map(e -> new EventDTO(
+                        e.getId(),
+                        e.getEventDate(),
+                        e.getLocation(),
+                        e.getDescription(),
+                        conflict.getId(),
+                        conflict.getName()
+                ))
+                .collect(Collectors.toList());
+
+        return new ConflictDetailDTO(
+                conflict.getId(),
+                conflict.getName(),
+                conflict.getStartDate(),
+                conflict.getStatus(),
+                conflict.getDescription(),
+                countries,
+                factions,
+                events
+        );
     }
 }
+
 

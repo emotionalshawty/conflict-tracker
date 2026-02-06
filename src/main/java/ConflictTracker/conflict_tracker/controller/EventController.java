@@ -1,8 +1,8 @@
 package ConflictTracker.conflict_tracker.controller;
 
+import ConflictTracker.conflict_tracker.dto.EventCreateDTO;
 import ConflictTracker.conflict_tracker.dto.EventDTO;
 import ConflictTracker.conflict_tracker.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,27 +13,42 @@ import java.util.List;
 @RequestMapping("/api/v1/events")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
+
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<EventDTO>> getAllEvents() {
-        return ResponseEntity.ok(eventService.getAllEvents());
+    public ResponseEntity<List<EventDTO>> getAllEvents(
+            @RequestParam(required = false) Long conflictId) {
+        List<EventDTO> events;
+        if (conflictId != null) {
+            events = eventService.getEventsByConflictId(conflictId);
+        } else {
+            events = eventService.getAllEvents();
+        }
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EventDTO> getEventById(@PathVariable Long id) {
-        return ResponseEntity.ok(eventService.getEventById(id));
+        EventDTO event = eventService.getEventById(id);
+        return ResponseEntity.ok(event);
     }
 
     @PostMapping
-    public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO eventDTO) {
-        return new ResponseEntity<>(eventService.createEvent(eventDTO), HttpStatus.CREATED);
+    public ResponseEntity<EventDTO> createEvent(@RequestBody EventCreateDTO createDTO) {
+        EventDTO created = eventService.createEvent(createDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
-        return ResponseEntity.ok(eventService.updateEvent(id, eventDTO));
+    public ResponseEntity<EventDTO> updateEvent(
+            @PathVariable Long id,
+            @RequestBody EventCreateDTO updateDTO) {
+        EventDTO updated = eventService.updateEvent(id, updateDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

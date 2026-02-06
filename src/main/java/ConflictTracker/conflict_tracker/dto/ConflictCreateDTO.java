@@ -1,25 +1,30 @@
 package ConflictTracker.conflict_tracker.dto;
 
 import ConflictTracker.conflict_tracker.model.ConflictStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class ConflictDTO {
+public class ConflictCreateDTO {
 
-    private Long id;
+    @NotBlank(message = "Name is required")
     private String name;
+
     private LocalDate startDate;
+
+    @NotNull(message = "Status is required")
     private ConflictStatus status;
+
     private String description;
+
     private Set<String> countryCodes;
 
     // Constructors
+    public ConflictCreateDTO() {}
 
-    public ConflictDTO() {}
-
-    public ConflictDTO(Long id, String name, LocalDate startDate, ConflictStatus status,
-                       String description, Set<String> countryCodes) {
-        this.id = id;
+    public ConflictCreateDTO(String name, LocalDate startDate, ConflictStatus status,
+                             String description, Set<String> countryCodes) {
         this.name = name;
         this.startDate = startDate;
         this.status = status;
@@ -28,10 +33,6 @@ public class ConflictDTO {
     }
 
     // Getters and Setters
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -47,5 +48,4 @@ public class ConflictDTO {
     public Set<String> getCountryCodes() { return countryCodes; }
     public void setCountryCodes(Set<String> countryCodes) { this.countryCodes = countryCodes; }
 }
-
 

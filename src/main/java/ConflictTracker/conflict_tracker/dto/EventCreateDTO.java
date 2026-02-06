@@ -1,33 +1,30 @@
 package ConflictTracker.conflict_tracker.dto;
 
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class EventDTO {
+public class EventCreateDTO {
 
-    private Long id;
     private LocalDate eventDate;
+
     private String location;
+
     private String description;
+
+    @NotNull(message = "Conflict ID is required")
     private Long conflictId;
-    private String conflictName;
 
     // Constructors
-    public EventDTO() {}
+    public EventCreateDTO() {}
 
-    public EventDTO(Long id, LocalDate eventDate, String location, String description,
-                    Long conflictId, String conflictName) {
-        this.id = id;
+    public EventCreateDTO(LocalDate eventDate, String location, String description, Long conflictId) {
         this.eventDate = eventDate;
         this.location = location;
         this.description = description;
         this.conflictId = conflictId;
-        this.conflictName = conflictName;
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public LocalDate getEventDate() { return eventDate; }
     public void setEventDate(LocalDate eventDate) { this.eventDate = eventDate; }
 
@@ -39,8 +36,5 @@ public class EventDTO {
 
     public Long getConflictId() { return conflictId; }
     public void setConflictId(Long conflictId) { this.conflictId = conflictId; }
-
-    public String getConflictName() { return conflictName; }
-    public void setConflictName(String conflictName) { this.conflictName = conflictName; }
 }
 

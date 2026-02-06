@@ -2,10 +2,13 @@ package ConflictTracker.conflict_tracker.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "conflicts")
 public class Conflict {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +31,12 @@ public class Conflict {
     )
     private Set<Country> countries = new HashSet<>();
 
+    @OneToMany(mappedBy = "conflict", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Faction> factions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "conflict", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events = new ArrayList<>();
+
     public Conflict() {}
 
     public Long getId() { return id; }
@@ -42,4 +51,8 @@ public class Conflict {
     public void setDescription(String description) { this.description = description; }
     public Set<Country> getCountries() { return countries; }
     public void setCountries(Set<Country> countries) { this.countries = countries; }
+    public List<Faction> getFactions() { return factions; }
+    public void setFactions(List<Faction> factions) { this.factions = factions; }
+    public List<Event> getEvents() { return events; }
+    public void setEvents(List<Event> events) { this.events = events; }
 }

@@ -1,24 +1,24 @@
 package ConflictTracker.conflict_tracker.dto;
 
-public class CountryDTO {
+import jakarta.validation.constraints.NotBlank;
 
-    private Long id;
+public class CountryCreateDTO {
+
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Code is required")
     private String code;
 
     // Constructors
-    public CountryDTO() {}
+    public CountryCreateDTO() {}
 
-    public CountryDTO(Long id, String name, String code) {
-        this.id = id;
+    public CountryCreateDTO(String name, String code) {
         this.name = name;
         this.code = code;
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
