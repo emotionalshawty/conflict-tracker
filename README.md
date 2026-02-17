@@ -44,6 +44,7 @@ DELETE FROM conflict WHERE id = 1;
 
 ## FRONTEND
 Para acceder al frontend como vista (sin poder hacer nada), vamos a http://localhost:8080/index.html
+
 Si se quiere añadir o eliminar conflictos, se va a http://localhost:8080/web/conflicts
     
 # AL UTILIZAR LOS DOS LINKS, TODO SE SINCRONIZA SIN PROBLEMAS
