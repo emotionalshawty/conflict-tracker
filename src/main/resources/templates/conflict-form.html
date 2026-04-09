@@ -12,6 +12,33 @@
         button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
         button:hover { background-color: #45a049; }
         .back-link { display: inline-block; margin-top: 15px; text-decoration: none; color: #333; }
+        .countries-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .country-item {
+            padding: 5px;
+            margin: 3px 0;
+            cursor: pointer;
+        }
+        .country-item:hover {
+            background-color: #e8e8e8;
+        }
+        .country-item input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        .country-item label {
+            display: inline;
+            font-weight: normal;
+            cursor: pointer;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -37,6 +64,21 @@
                     th:text="${statusOption}">ACTIVE</option>
         </select>
         <span class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status Error</span>
+
+        <label>Countries Involved:</label>
+        <div class="countries-list" th:if="${countries != null and !countries.isEmpty()}">
+            <div th:each="country : ${countries}" class="country-item">
+                <input type="checkbox"
+                       th:id="'country_' + ${country.code}"
+                       name="countryCodes"
+                       th:value="${country.code}"
+                       th:checked="${conflict.countryCodes != null and conflict.countryCodes.contains(country.code)}">
+                <label th:for="'country_' + ${country.code}" th:text="${country.name} + ' (' + ${country.code} + ')'">Country Name</label>
+            </div>
+        </div>
+        <div th:if="${countries == null or countries.isEmpty()}" style="color: #999; font-style: italic; margin-bottom: 15px;">
+            No countries available. Please add countries first.
+        </div>
 
         <label for="description">Description:</label>
         <textarea id="description" th:field="*{description}" rows="4" placeholder="Enter description"></textarea>
