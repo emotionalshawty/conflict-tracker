@@ -10,7 +10,7 @@ description = 'Tracker of conflicts and wars across the globe'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 

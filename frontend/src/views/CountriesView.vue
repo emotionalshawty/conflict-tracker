@@ -20,15 +20,15 @@
  </div>
 
  <div v-else-if="filteredCountries.length === 0" class="empty-state">
- <div class="empty-state__icon"></div>
  <p class="empty-state__text">{{ t('countries.noResults') }}</p>
  </div>
 
  <!-- Country grid (v-for) -->
  <div v-else class="grid grid--auto">
- <div
+ <router-link
  v-for="country in filteredCountries"
- :key="country.id"
+ :key="country.code"
+ :to="`/countries/${country.code}/conflicts`"
  class="country-card"
  >
  <div class="country-card__flag">
@@ -44,7 +44,7 @@
  >{{ country.code }}</span>
  </span>
  </div>
- </div>
+ </router-link>
  </div>
  </div>
 </template>
@@ -86,6 +86,8 @@ const filteredCountries = computed(() => {
  align-items: center;
  gap: 1rem;
  transition: transform 0.2s, box-shadow 0.2s;
+ text-decoration: none;
+ color: inherit;
 }
 .country-card:hover {
  transform: translateY(-2px);

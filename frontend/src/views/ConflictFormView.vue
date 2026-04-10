@@ -64,7 +64,8 @@
  </template>
 
  <div v-if="countryStore.loading" class="empty-mini">{{ t('common.loading') }}</div>
- <div v-else class="country-checkboxes">
+ <div>
+ <div class="country-checkboxes">
  <label
  v-for="country in countryStore.countries"
  :key="country.code"
@@ -81,6 +82,11 @@
  <span class="check-name">{{ country.name }}</span>
  <span v-if="form.countryCodes.includes(country.code)" class="check-tick">✓</span>
  </label>
+ </div>
+
+ <div v-if="!countryStore.countries.length" class="empty-mini">
+ {{ t('form.noCountriesAvailable') }}
+ </div>
  </div>
  </AppCard>
 
@@ -135,8 +141,8 @@ const errors = reactive({ name: '' })
 
 onMounted(async () => {
  // Always load countries for the checkbox list
- if (!countryStore.countries.length) {
- await countryStore.fetchAll()
+ if (!countryStore.countries.length && !countryStore.loading) {
+ countryStore.fetchAll()
  }
 
  // If editing, populate the form
@@ -209,8 +215,6 @@ async function handleSubmit() {
 .form-control--error { border-color: var(--status-active); }
 
 .field-error { color: #f87171; font-size: 0.8rem; margin-top: 0.25rem; display: block; }
-
-.countries-card { }
 
 .country-checkboxes {
  display: grid;

@@ -40,7 +40,6 @@
 
  <!-- Empty state -->
  <div v-else-if="filteredConflicts.length === 0" class="empty-state">
- <div class="empty-state__icon"></div>
  <p class="empty-state__text">{{ t('conflicts.noResults') }}</p>
  </div>
 

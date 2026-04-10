@@ -3,7 +3,6 @@
  <div class="nav-container">
  <!-- Logo -->
  <router-link to="/" class="nav-brand">
- <span class="brand-icon"></span>
  <span class="brand-text">{{ t('home.title') }}</span>
  </router-link>
 
@@ -11,7 +10,6 @@
  <ul class="nav-links">
  <li v-for="link in navLinks" :key="link.to">
  <router-link :to="link.to" class="nav-link" active-class="nav-link--active">
- <span class="link-icon">{{ link.icon }}</span>
  {{ t(link.label) }}
  </router-link>
  </li>
@@ -47,7 +45,7 @@
  active-class="mobile-link--active"
  @click="mobileOpen = false"
  >
- {{ link.icon }} {{ t(link.label) }}
+ {{ t(link.label) }}
  </router-link>
  </div>
  </nav>
@@ -63,10 +61,10 @@ const { t } = useI18n()
 const mobileOpen = ref(false)
 
 const navLinks = [
- { to: '/', label: 'nav.home', icon: '' },
- { to: '/conflicts', label: 'nav.conflicts', icon: '' },
- { to: '/countries', label: 'nav.countries', icon: '' },
- { to: '/events', label: 'nav.events', icon: '' }
+ { to: '/', label: 'nav.home' },
+ { to: '/conflicts', label: 'nav.conflicts' },
+ { to: '/countries', label: 'nav.countries' },
+ { to: '/events', label: 'nav.events' }
 ]
 
 const languages = [
@@ -107,8 +105,6 @@ const languages = [
  white-space: nowrap;
 }
 
-.brand-icon { font-size: 1.25rem; }
-
 .nav-links {
  display: flex;
  list-style: none;
@@ -133,7 +129,6 @@ const languages = [
 
 .nav-link:hover { background: var(--bg-hover); color: var(--text-primary); }
 .nav-link--active { background: var(--bg-hover); color: var(--accent); }
-.link-icon { font-size: 0.95rem; }
 
 .nav-right {
  display: flex;

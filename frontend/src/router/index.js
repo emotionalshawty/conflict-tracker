@@ -4,6 +4,7 @@ import ConflictsView from '../views/ConflictsView.vue'
 import ConflictDetailView from '../views/ConflictDetailView.vue'
 import ConflictFormView from '../views/ConflictFormView.vue'
 import CountriesView from '../views/CountriesView.vue'
+import CountryConflictsView from '../views/CountryConflictsView.vue'
 import EventsView from '../views/EventsView.vue'
 
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
  { path: '/conflicts/:id', component: ConflictDetailView },
  { path: '/conflicts/:id/edit', component: ConflictFormView, props: true },
  { path: '/countries', component: CountriesView },
+ { path: '/countries/:code/conflicts', component: CountryConflictsView },
  { path: '/events', component: EventsView },
  { path: '/:pathMatch(.*)*', redirect: '/' }
 ]

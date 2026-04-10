@@ -20,7 +20,6 @@
  </div>
 
  <div v-else-if="filteredEvents.length === 0" class="empty-state">
- <div class="empty-state__icon"></div>
  <p class="empty-state__text">{{ t('events.noResults') }}</p>
  </div>
 

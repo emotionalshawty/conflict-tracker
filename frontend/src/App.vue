@@ -172,7 +172,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
  padding: 4rem 2rem;
  color: var(--text-muted);
 }
-.empty-state__icon { font-size: 3rem; margin-bottom: 1rem; }
 .empty-state__text { font-size: 1rem; }
 
 /* ── Page transitions ── */

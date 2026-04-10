@@ -9,7 +9,6 @@
  {{ t('home.viewAll') }} →
  </router-link>
  </div>
- <div class="hero-globe"></div>
  </div>
 
  <!-- Stats cards -->
@@ -17,7 +16,6 @@
  <AppCard v-for="stat in stats" :key="stat.key" variant="elevated">
  <template #header>
  <span class="stat-label">{{ t(`home.${stat.key}`) }}</span>
- <span class="stat-icon" :class="`stat-icon--${stat.color}`">{{ stat.icon }}</span>
  </template>
  <div class="stat-value" :class="`stat-value--${stat.color}`">{{ stat.value }}</div>
  </AppCard>
@@ -38,7 +36,6 @@
  </div>
 
  <div v-else-if="recentConflicts.length === 0" class="empty-state">
- <div class="empty-state__icon"></div>
  <p class="empty-state__text">{{ t('home.noData') }}</p>
  </div>
 
@@ -112,25 +109,21 @@ const stats = computed(() => [
  {
  key: 'total',
  value: conflictStore.conflicts.length,
- icon: '',
  color: 'neutral'
  },
  {
  key: 'active',
  value: conflictStore.activeConflicts.length,
- icon: '',
  color: 'active'
  },
  {
  key: 'frozen',
  value: conflictStore.frozenConflicts.length,
- icon: '',
  color: 'frozen'
  },
  {
  key: 'ended',
  value: conflictStore.endedConflicts.length,
- icon: '',
  color: 'ended'
  }
 ])
@@ -170,17 +163,9 @@ function formatDate(dateStr) {
  line-height: 1.7;
 }
 
-.hero-globe {
- font-size: 7rem;
- opacity: 0.15;
- user-select: none;
- flex-shrink: 0;
-}
-
 .stats-grid { margin-bottom: 2rem; }
 
 .stat-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.stat-icon { font-size: 1.2rem; }
 .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; line-height: 1; }
 
 .stat-value--active { color: var(--status-active); }
@@ -238,7 +223,6 @@ function formatDate(dateStr) {
 @media (max-width: 900px) {
  .home-grid { grid-template-columns: 1fr; }
  .hero { flex-direction: column; text-align: center; padding: 2rem 0 2.5rem; }
- .hero-globe { display: none; }
  .hero-subtitle { max-width: 100%; }
 }
 </style>

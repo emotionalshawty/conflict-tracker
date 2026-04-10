@@ -55,31 +55,6 @@
  </ul>
  </AppCard>
 
- <!-- Factions -->
- <AppCard variant="default">
- <template #header>
- <h2 class="section-title"> {{ t('detail.factions') }}</h2>
- <span class="section-count">{{ conflict.factions?.length ?? 0 }}</span>
- </template>
-
- <div v-if="!conflict.factions?.length" class="empty-mini">
- {{ t('detail.noFactions') }}
- </div>
- <ul v-else class="faction-list">
- <li v-for="faction in conflict.factions" :key="faction.id" class="faction-item">
- <div class="faction-name">{{ faction.name }}</div>
- <div v-if="faction.supportingCountryCodes?.length" class="faction-countries">
- <CountryFlag
- v-for="code in faction.supportingCountryCodes"
- :key="code"
- :code="code"
- size="sm"
- />
- </div>
- </li>
- </ul>
- </AppCard>
-
  <!-- Event count summary -->
  <AppCard variant="default">
  <template #header>
@@ -91,44 +66,12 @@
  <span class="ov-label">{{ t('nav.events') }}</span>
  </div>
  <div class="ov-stat">
- <span class="ov-value">{{ conflict.factions?.length ?? 0 }}</span>
- <span class="ov-label">{{ t('detail.factions') }}</span>
- </div>
- <div class="ov-stat">
  <span class="ov-value">{{ conflict.countries?.length ?? 0 }}</span>
  <span class="ov-label">{{ t('nav.countries') }}</span>
  </div>
  </div>
  </AppCard>
  </div>
-
- <!-- Event Timeline -->
- <AppCard variant="default" class="timeline-card">
- <template #header>
- <h2 class="section-title"> {{ t('detail.timeline') }}</h2>
- <span class="section-count">{{ conflict.events?.length ?? 0 }}</span>
- </template>
-
- <div v-if="!conflict.events?.length" class="empty-mini">
- {{ t('detail.noEvents') }}
- </div>
- <div v-else class="timeline">
- <div
- v-for="event in sortedEvents"
- :key="event.id"
- class="timeline-item"
- >
- <div class="timeline-dot"></div>
- <div class="timeline-content">
- <div class="timeline-header">
- <span class="timeline-date">{{ formatDate(event.eventDate) }}</span>
- <span v-if="event.location" class="timeline-location"> {{ event.location }}</span>
- </div>
- <p class="timeline-desc">{{ event.description || '—' }}</p>
- </div>
- </div>
- </div>
- </AppCard>
  </template>
 
  <!-- Delete confirm modal -->
@@ -171,13 +114,6 @@ watch(id, (newId, oldId) => {
 })
 
 const conflict = computed(() => conflictStore.currentConflict)
-
-// Sort events chronologically
-const sortedEvents = computed(() =>
- conflict.value?.events
- ? [...conflict.value.events].sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))
- : []
-)
 
 function formatDate(dateStr) {
  if (!dateStr) return '—'
@@ -280,57 +216,10 @@ async function handleDelete() {
 .country-name { font-weight: 500; font-size: 0.9rem; }
 .country-code { color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; }
 
-.faction-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
-.faction-item {
- padding: 0.75rem;
- background: var(--bg-input);
- border-radius: 8px;
- border: 1px solid var(--border);
-}
-.faction-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.35rem; }
-.faction-countries { display: flex; gap: 4px; flex-wrap: wrap; }
-
 .overview-stats { display: flex; justify-content: space-around; padding: 0.5rem 0; }
 .ov-stat { text-align: center; }
 .ov-value { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--accent); }
 .ov-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-
-.timeline-card { margin-bottom: 0; }
-
-.timeline { position: relative; padding-left: 1.5rem; }
-.timeline::before {
- content: '';
- position: absolute;
- left: 0;
- top: 8px;
- bottom: 8px;
- width: 2px;
- background: var(--border);
-}
-
-.timeline-item {
- position: relative;
- padding-bottom: 1.5rem;
- padding-left: 1.5rem;
-}
-.timeline-item:last-child { padding-bottom: 0; }
-
-.timeline-dot {
- position: absolute;
- left: -1.625rem;
- top: 6px;
- width: 12px;
- height: 12px;
- border-radius: 50%;
- background: var(--accent);
- border: 2px solid var(--bg-card);
- box-shadow: 0 0 0 2px var(--accent);
-}
-
-.timeline-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.35rem; flex-wrap: wrap; }
-.timeline-date { font-weight: 600; font-size: 0.88rem; color: var(--text-primary); }
-.timeline-location { color: var(--text-muted); font-size: 0.82rem; }
-.timeline-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin: 0; }
 
 @media (max-width: 900px) {
  .detail-grid { grid-template-columns: 1fr; }

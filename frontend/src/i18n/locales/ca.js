@@ -56,6 +56,7 @@ export default {
  namePlaceholder: 'Introduïu el nom del conflicte...',
  descriptionPlaceholder: 'Descriviu el conflicte...',
  selectCountries: 'Seleccioneu països...',
+ noCountriesAvailable: 'No hi ha països disponibles per seleccionar.',
  saving: 'Desant...'
  },
  countries: {
@@ -65,7 +66,9 @@ export default {
  name: 'Nom',
  loading: 'Carregant països...',
  noResults: "No s'han trobat països.",
- conflicts: 'conflictes'
+ conflicts: 'conflictes',
+ conflictsFor: 'Conflictes per a',
+ noConflictsForCountry: 'No s\'han trobat conflictes per a aquest país.'
  },
  events: {
  title: 'Esdeveniments',

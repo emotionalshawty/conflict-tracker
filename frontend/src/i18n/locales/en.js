@@ -56,6 +56,7 @@ export default {
  namePlaceholder: 'Enter conflict name...',
  descriptionPlaceholder: 'Describe the conflict...',
  selectCountries: 'Select countries...',
+ noCountriesAvailable: 'No countries available to select.',
  saving: 'Saving...'
  },
  countries: {
@@ -65,7 +66,9 @@ export default {
  name: 'Name',
  loading: 'Loading countries...',
  noResults: 'No countries found.',
- conflicts: 'conflicts'
+ conflicts: 'conflicts',
+ conflictsFor: 'Conflicts for',
+ noConflictsForCountry: 'No conflicts found for this country.'
  },
  events: {
  title: 'Events',

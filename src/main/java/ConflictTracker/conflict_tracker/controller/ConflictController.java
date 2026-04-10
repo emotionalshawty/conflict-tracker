@@ -5,6 +5,7 @@ import ConflictTracker.conflict_tracker.dto.ConflictDetailDTO;
 import ConflictTracker.conflict_tracker.dto.ConflictDTO;
 import ConflictTracker.conflict_tracker.model.ConflictStatus;
 import ConflictTracker.conflict_tracker.service.ConflictService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class ConflictController {
     }
 
     @PostMapping
-    public ResponseEntity<ConflictDTO> createConflict(@RequestBody ConflictCreateDTO createDTO) {
+    public ResponseEntity<ConflictDTO> createConflict(@RequestBody @Valid ConflictCreateDTO createDTO) {
         ConflictDTO created = conflictService.createConflict(createDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -48,7 +49,7 @@ public class ConflictController {
     @PutMapping("/{id}")
     public ResponseEntity<ConflictDTO> updateConflict(
             @PathVariable Long id,
-            @RequestBody ConflictCreateDTO updateDTO) {
+            @RequestBody @Valid ConflictCreateDTO updateDTO) {
         ConflictDTO updated = conflictService.updateConflict(id, updateDTO);
         return ResponseEntity.ok(updated);
     }
