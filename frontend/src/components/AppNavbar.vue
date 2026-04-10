@@ -63,6 +63,7 @@ const mobileOpen = ref(false)
 const navLinks = [
  { to: '/', label: 'nav.home' },
  { to: '/conflicts', label: 'nav.conflicts' },
+ { to: '/map', label: 'nav.map' },
  { to: '/countries', label: 'nav.countries' },
  { to: '/events', label: 'nav.events' }
 ]

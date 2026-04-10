@@ -39,7 +39,7 @@
  {{ t('conflicts.edit') }}
  </button>
  <button class="btn btn--danger btn--sm" @click="$emit('delete', conflict.id)">
- 
+ {{ t('conflicts.delete') }}
  </button>
  </div>
  </div>

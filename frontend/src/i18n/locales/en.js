@@ -2,6 +2,7 @@ export default {
  nav: {
  home: 'Home',
  conflicts: 'Conflicts',
+ map: 'Map',
  countries: 'Countries',
  events: 'Events'
  },
@@ -80,6 +81,16 @@ export default {
  loading: 'Loading events...',
  noResults: 'No events found.',
  unknown: 'Unknown location'
+ },
+ map: {
+ title: 'Conflict Map',
+ subtitle: 'Explore where active and historical conflicts are located.',
+ imageAlt: 'World map',
+ countriesWithConflicts: 'countries with conflicts',
+ help: 'Click a marker to list conflicts in that country.',
+ selectCountry: 'Select a country',
+ selectCountryHint: 'Choose a marker on the map to inspect conflicts.',
+ noConflictsForMarker: 'No conflicts mapped for this country.'
  },
  status: {
  ACTIVE: 'Active',

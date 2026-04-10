@@ -2,6 +2,7 @@ export default {
  nav: {
  home: 'Inici',
  conflicts: 'Conflictes',
+ map: 'Mapa',
  countries: 'Països',
  events: 'Esdeveniments'
  },
@@ -80,6 +81,16 @@ export default {
  loading: 'Carregant esdeveniments...',
  noResults: "No s'han trobat esdeveniments.",
  unknown: 'Ubicació desconeguda'
+ },
+ map: {
+ title: 'Mapa de Conflictes',
+ subtitle: 'Explora on es troben els conflictes actius i històrics.',
+ imageAlt: 'Mapa del mon',
+ countriesWithConflicts: 'països amb conflictes',
+ help: 'Feu clic en un marcador per veure els conflictes d\'aquest país.',
+ selectCountry: 'Seleccioneu un país',
+ selectCountryHint: 'Trieu un marcador del mapa per inspeccionar conflictes.',
+ noConflictsForMarker: 'No hi ha conflictes mapejats per a aquest país.'
  },
  status: {
  ACTIVE: 'Actiu',
